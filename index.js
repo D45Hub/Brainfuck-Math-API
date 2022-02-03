@@ -5,8 +5,8 @@ const path = require('path')
 
 const port = process.env.PORT || 3000
 
-const SUM_MODULE_PATH = path.resolve(__dirname, 'sum.bf')
-const OUTPUT_MODULE_PATH = path.resolve(__dirname, 'resultJson.bf')
+const SUM_MODULE_PATH = path.resolve(__dirname, 'sum.b')
+const OUTPUT_MODULE_PATH = path.resolve(__dirname, 'resultJson.b')
 
 const server = http.createServer((req, res) => {
   if (req.method !== 'GET') {
