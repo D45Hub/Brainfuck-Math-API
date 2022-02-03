@@ -1,0 +1,19 @@
+{
+  "name": "brainfuck-calc-api",
+  "version": "1.0.0",
+  "description": "A mathematical API which uses Brainfuck for the calculations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "Brainfuck",
+    "API"
+  ],
+  "author": "D45Hub",
+  "license": "WTFPL",
+  "dependencies": {
+    "brainfuck2000": "^0.1.1"
+  }
+}
