@@ -2,6 +2,7 @@ const http = require('http');
 const brainfuck = require('brainfuck2000')
 const fs = require('fs')
 const path = require('path')
+const url = require('url')
 
 const port = process.env.PORT || 3000
 
@@ -13,7 +14,10 @@ const server = http.createServer((req, res) => {
     res.end(`{"error": "${http.STATUS_CODES[405]}"}`)
   } else {
 
-    if (req.url.includes("/sum")) {
+    let urlParts = url.parse(req.url)
+    let urlPathname = urlParts.pathname
+
+    if (urlPathname === "/sum") {
 
       let r = handleSumRequest(req)
       let outputCode = readFile(OUTPUT_MODULE_PATH)
@@ -36,19 +40,7 @@ function handleSumRequest(req) {
   let num1 = parseInt(params.get("/sum?num1"))
   let num2 = parseInt(params.get("num2"))
 
-  let numString = ''
-
-  while (num1 > 0) {
-    numString += '+'
-    num1--
-  }
-
-  numString += '>'
-
-  while (num2 > 0) {
-    numString += '+'
-    num2--
-  }
+  let numString = generateBfCellValueFromNumber(num1) + '>' + generateBfCellValueFromNumber(num2)
 
   let sumBfSource = readFile(SUM_MODULE_PATH)
 
@@ -56,6 +48,16 @@ function handleSumRequest(req) {
   const program = brainfuck(brainfuckCommand)
   program.run(req)
   return program.resultString().charCodeAt(0)
+}
+
+function generateBfCellValueFromNumber(num) {
+  let numString = ''
+
+  while (num > 0) {
+    numString += '+'
+    num--
+  }
+  return numString
 }
 
 function readFile(filePath) {
