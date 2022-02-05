@@ -5,7 +5,6 @@ module.exports = {
   generateBrainfuckCommand
 }
 
-
 function generateBrainfuckCommand(num1, num2, module_path) {
 
   let numString = generateBfCellValueFromNumber(num1) + '>' + generateBfCellValueFromNumber(num2)

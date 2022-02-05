@@ -1,6 +1,5 @@
 const http = require('http');
 const brainfuck = require('brainfuck2000')
-const fs = require('fs')
 const path = require('path')
 const url = require('url')
 
@@ -9,10 +8,12 @@ const port = process.env.PORT || 3000
 const eval = require('./src/js/eval.js')
 const fileReader = require('./src/js/fileReader.js')
 
-const SUM_MODULE_PATH = path.resolve(__dirname + "/src/bf/", 'sum.b')
-const SUBTRACT_MODULE_PATH = path.resolve(__dirname + "/src/bf/", 'subtract.b')
-const OUTPUT_MODULE_PATH = path.resolve(__dirname + "/src/bf/", 'resultJson.b')
+const bfFolderPath = __dirname + "/src/bf/"
 
+const SUM_MODULE_PATH = path.resolve(bfFolderPath, 'sum.b')
+const SUBTRACT_MODULE_PATH = path.resolve(bfFolderPath, 'subtract.b')
+const OUTPUT_MODULE_PATH = path.resolve(bfFolderPath, 'resultJson.b')
+const outputCode = fileReader.readFile(OUTPUT_MODULE_PATH)
 
 const server = http.createServer((req, res) => {
 
@@ -26,21 +27,11 @@ const server = http.createServer((req, res) => {
     if (urlPathname === "/sum") {
 
       let r = handleSumRequest(req)
-      let outputCode = fileReader.readFile(OUTPUT_MODULE_PATH)
-
-      const program = brainfuck(outputCode)
-      program.run(req)
-
-      res.end(program.resultString().replace('#', r))
+      res.end(handleBrainfuckCommand(outputCode).replace('#', r))
     } else if (urlPathname === "/subtract") {
 
       let r = handleSubtractRequest(req)
-      let outputCode = fileReader.readFile(OUTPUT_MODULE_PATH)
-
-      const program = brainfuck(outputCode)
-      program.run(req)
-
-      res.end(program.resultString().replace('#', r))
+      res.end(handleBrainfuckCommand(outputCode).replace('#', r))
     }
   }
 })
@@ -56,12 +47,8 @@ function handleSumRequest(req) {
   let num2 = parseInt(params.get("num2"))
 
   let brainfuckCommand = eval.generateBrainfuckCommand(num1, num2, SUM_MODULE_PATH)
-  const program = brainfuck(brainfuckCommand)
-  program.run(req)
-  return program.resultString().charCodeAt(0)
+  return handleBrainfuckCommand(brainfuckCommand, req).charCodeAt(0)
 }
-
-
 
 function handleSubtractRequest(req) {
 
@@ -70,8 +57,12 @@ function handleSubtractRequest(req) {
   let num2 = parseInt(params.get("num2"))
 
   let brainfuckCommand = eval.generateBrainfuckCommand(num1, num2, SUBTRACT_MODULE_PATH)
+  return handleBrainfuckCommand(brainfuckCommand, req).charCodeAt(0)
+}
+
+function handleBrainfuckCommand(brainfuckCommand, req) {
   const program = brainfuck(brainfuckCommand)
   program.run(req)
 
-  return program.resultString().charCodeAt(0)
+  return program.resultString()
 }

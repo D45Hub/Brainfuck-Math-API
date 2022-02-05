@@ -10,6 +10,5 @@ function readFile(filePath) {
     encoding: 'utf8',
     flag: 'r'
   });
-
   return data
 }

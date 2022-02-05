@@ -4,14 +4,17 @@ const path = require('path')
 const eval = require('./src/js/eval.js')
 const fileReader = require('./src/js/fileReader.js')
 
-const SUM_MODULE_PATH = path.resolve(__dirname + "/src/bf/", 'sum.b')
-const SUBTRACT_MODULE_PATH = path.resolve(__dirname + "/src/bf/", 'subtract.b')
-const OUTPUT_MODULE_PATH = path.resolve(__dirname + "/src/bf/", 'resultJson.b')
+const bfFolderPath = __dirname + "/src/bf/"
+const expectedResultsPath = __dirname + "/src/test/expected_results/"
+
+const SUM_MODULE_PATH = path.resolve(bfFolderPath, 'sum.b')
+const SUBTRACT_MODULE_PATH = path.resolve(bfFolderPath, 'subtract.b')
+const OUTPUT_MODULE_PATH = path.resolve(bfFolderPath, 'resultJson.b')
 const EQUALS_MODULE = path.resolve(__dirname + "/src/test/", 'equals.b')
 
-const MODULE_45_PATH = path.resolve(__dirname + "/src/test/expected_results/", '45.b')
-const MODULE_42_PATH = path.resolve(__dirname + "/src/test/expected_results/", '42.b')
-const ADDITION_MODULE_MESSAGE_PATH = path.resolve(__dirname + "/src/test/expected_results/", 'additionModuleMessage.b')
+const MODULE_45_PATH = path.resolve(expectedResultsPath, '45.b')
+const MODULE_42_PATH = path.resolve(expectedResultsPath, '42.b')
+const ADDITION_MODULE_MESSAGE_PATH = path.resolve(expectedResultsPath, 'additionModuleMessage.b')
 
 const testValue1 = 15
 const testValue2 = 30
@@ -32,16 +35,16 @@ function testAddition() {
   let testCommand2 = additionCommand2 + testedValueCommand2 + equalsModule
 
   const program1 = brainfuck(testCommand1)
-  const program3 = brainfuck(testCommand2)
+  const program2 = brainfuck(testCommand2)
 
   program1.run()
-  program3.run()
-
-  let testHeaderMessageCommand = fileReader.readFile(ADDITION_MODULE_MESSAGE_PATH)
-  const program2 = brainfuck(testHeaderMessageCommand)
   program2.run()
 
-  console.log(program2.resultString())
+  let testHeaderMessageCommand = fileReader.readFile(ADDITION_MODULE_MESSAGE_PATH)
+  const program3 = brainfuck(testHeaderMessageCommand)
+  program3.run()
+
+  console.log(program3.resultString())
   console.log(program1.resultString().slice(1))
-  console.log(program3.resultString().slice(1))
+  console.log(program2.resultString().slice(1))
 }
