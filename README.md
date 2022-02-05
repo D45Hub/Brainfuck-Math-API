@@ -7,6 +7,8 @@ It uses a basic JS server for recieving API requests and passes the request type
 
 Use NodeJS with "npm install" to install the prerequisites and then use "npm start" to start up the API.
 
+The tests for the project can be executed with "npm test". Yes there are unit tests for this project. And yes they are also written in Brainfuck.
+
 ## Endpoints
 
 The API uses the port 3000 for recieving requests and currently supports these endpoints for requests.
