@@ -41,22 +41,20 @@ server.listen(port, () => {
 })
 
 function handleSumRequest(req) {
-
-  let params = new URLSearchParams(req.url)
-  let num1 = parseInt(params.get("/sum?num1"))
-  let num2 = parseInt(params.get("num2"))
-
-  let brainfuckCommand = eval.generateBrainfuckCommand(num1, num2, SUM_MODULE_PATH)
-  return handleBrainfuckCommand(brainfuckCommand, req).charCodeAt(0)
+  return handleGenericRequest(req, "/sum?num1", "num2", SUM_MODULE_PATH)
 }
 
 function handleSubtractRequest(req) {
+  return handleGenericRequest(req, "/subtract?num1", "num2", SUBTRACT_MODULE_PATH)
+}
+
+function handleGenericRequest(req, url_param1, url_param2, module_path) {
 
   let params = new URLSearchParams(req.url)
-  let num1 = parseInt(params.get("/subtract?num1"))
-  let num2 = parseInt(params.get("num2"))
+  let num1 = parseInt(params.get(url_param1))
+  let num2 = parseInt(params.get(url_param2))
 
-  let brainfuckCommand = eval.generateBrainfuckCommand(num1, num2, SUBTRACT_MODULE_PATH)
+  let brainfuckCommand = eval.generateBrainfuckCommand(num1, num2, module_path)
   return handleBrainfuckCommand(brainfuckCommand, req).charCodeAt(0)
 }
 
