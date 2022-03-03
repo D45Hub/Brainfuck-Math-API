@@ -12,6 +12,7 @@ const bfFolderPath = __dirname + "/src/bf/"
 
 const SUM_MODULE_PATH = path.resolve(bfFolderPath, 'sum.b')
 const SUBTRACT_MODULE_PATH = path.resolve(bfFolderPath, 'subtract.b')
+const MULTIPLICATION_MODULE_PATH = path.resolve(bfFolderPath, 'multiply.b')
 const OUTPUT_MODULE_PATH = path.resolve(bfFolderPath, 'resultJson.b')
 const outputCode = fileReader.readFile(OUTPUT_MODULE_PATH)
 
@@ -32,6 +33,10 @@ const server = http.createServer((req, res) => {
 
       let r = handleSubtractRequest(req)
       res.end(handleBrainfuckCommand(outputCode).replace('#', r))
+    } else if (urlPathname === "/multiply") {
+
+      let r = handleMultiplicationRequest(req)
+      res.end(handleBrainfuckCommand(outputCode).replace('#', r))
     }
   }
 })
@@ -46,6 +51,10 @@ function handleSumRequest(req) {
 
 function handleSubtractRequest(req) {
   return handleGenericRequest(req, "/subtract?num1", "num2", SUBTRACT_MODULE_PATH)
+}
+
+function handleMultiplicationRequest(req) {
+  return handleGenericRequest(req, "/multiply?num1", "num2", MULTIPLICATION_MODULE_PATH)
 }
 
 function handleGenericRequest(req, url_param1, url_param2, module_path) {
